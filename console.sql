@@ -1,3 +1,5 @@
+DROP TABLE raw_data;
+
 CREATE TABLE raw_data
 (
   ssoid         TEXT,
@@ -20,6 +22,14 @@ DELIMITER ';' CSV HEADER;
 
 SELECT DISTINCT asubtype
 FROM raw_data;
+
+SELECT
+  formid,
+  atype,
+  asubtype
+FROM raw_data
+GROUP BY formid, atype, asubtype
+ORDER BY formid, atype, asubtype;
 
 SELECT DISTINCT formid
 FROM raw_data;
@@ -123,6 +133,7 @@ WITH form_counter AS (
           AND ssoid IS NOT NULL
           AND formid IS NOT NULL
           AND formid <> 'null'
+          AND formid <> ''
     GROUP BY ssoid, formid
     ORDER BY formid
 )
@@ -131,7 +142,20 @@ SELECT
   count(formid) AS fc
 FROM form_counter
 GROUP BY formid
-ORDER BY fc DESC;
+ORDER BY fc DESC
+LIMIT 5;
+
+SELECT
+  ssoid,
+  formid
+FROM raw_data
+WHERE ssoid <> 'Unauthorized'
+      AND ssoid IS NOT NULL
+      AND formid IS NOT NULL
+      AND formid <> 'null'
+      AND formid <> ''
+GROUP BY ssoid, formid
+ORDER BY formid;
 
 WITH form_counter AS (
     SELECT
@@ -146,7 +170,8 @@ WITH form_counter AS (
     ORDER BY formid
 )
 SELECT
-  ssoid, formid
+  ssoid,
+  formid
 FROM form_counter
 GROUP BY ssoid, formid
 ORDER BY ssoid;

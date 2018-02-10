@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Class-Path: logback-classic-1.1.11.jar slf4j-api-1.7.25.jar postgresql
+ -42.2.1.jar spring-boot-starter-logging-1.5.10.RELEASE.jar log4j-over
+ -slf4j-1.7.25.jar jcl-over-slf4j-1.7.25.jar snakeyaml-1.17.jar spring
+ -boot-autoconfigure-1.5.10.RELEASE.jar tomcat-juli-8.5.27.jar spring-
+ jdbc-4.3.14.RELEASE.jar spring-aop-4.3.14.RELEASE.jar spring-expressi
+ on-4.3.14.RELEASE.jar jul-to-slf4j-1.7.25.jar spring-tx-4.3.14.RELEAS
+ E.jar spring-boot-starter-1.5.10.RELEASE.jar spring-boot-starter-jdbc
+ -1.5.10.RELEASE.jar spring-boot-1.5.10.RELEASE.jar spring-core-4.3.14
+ .RELEASE.jar logback-core-1.1.11.jar spring-beans-4.3.14.RELEASE.jar 
+ spring-context-4.3.14.RELEASE.jar tomcat-jdbc-8.5.27.jar
+Main-Class: ru.ffyud.trials.csvimporter.CsvImporter
+
