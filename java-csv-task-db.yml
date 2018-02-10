@@ -1,0 +1,11 @@
+version: '3.1'
+
+services:
+  java-csv-task-db:
+    image: postgres:9-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: secretpass
+    ports:
+      - 5432:5432
+
