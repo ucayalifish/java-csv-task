@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Не дошедшие до конца пользователи</title>
+</head>
+<body>
+<p><a th:href="@{/}">На главную</a></p>
+<h1>Не дошедшие до конца пользователи</h1>
+<table>
+  <tr>
+    <th colspan="1" rowspan="1">Порядковый номер</th>
+    <th colspan="1" rowspan="1">Пользователь</th>
+    <th colspan="1" rowspan="1">Форма (grp:formid)</th>
+    <th colspan="1" rowspan="1">Последний шаг (type:subtype)</th>
+  </tr>
+  <!--/*@thymesVar id="loosers" type="java.util.List<ru.ffyud.trials.csvdata.ReportTwoItem>"*/-->
+  <tr th:each="item,iterStat : ${loosers}">
+    <td colspan="1" rowspan="1" th:text="${iterStat.count}"></td>
+    <td colspan="1" rowspan="1" th:text="${item.userId}"></td>
+    <td colspan="1" rowspan="1" th:text="${item.formId}"></td>
+    <td colspan="1" rowspan="1" th:text="${item.finalStep}"></td>
+  </tr>
+</table>
+<p><a th:href="@{/}">На главную</a></p>
+</body>
+</html>

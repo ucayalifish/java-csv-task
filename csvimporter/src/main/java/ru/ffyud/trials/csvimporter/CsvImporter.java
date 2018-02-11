@@ -10,8 +10,10 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import ru.ffyud.trials.csvdata.DataService;
 import ru.ffyud.trials.csvdata.Fields;
 
 import java.io.FileReader;
@@ -28,6 +30,11 @@ public class CsvImporter implements ApplicationRunner {
 
   private static final Logger logger = LoggerFactory.getLogger(CsvImporter.class);
 
+  @Bean
+  DataService dataService() {
+    return new DataService(jdbcTemplate);
+  }
+
   @Autowired
   public CsvImporter(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
@@ -43,7 +50,7 @@ public class CsvImporter implements ApplicationRunner {
     inMemBuffer.add(record);
   }
 
-  private final static String UpdateSQL =
+  private final static String InsertSQL =
       "INSERT INTO raw_data "
       + "(ssoid, ts, grp, atype, asubtype, url, orgid, formid, code, ltpa, sudirresponse, ymdh) "
       + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -62,7 +69,7 @@ public class CsvImporter implements ApplicationRunner {
   }
 
   private long doBatch(final List<CSVRecord> batch, final int batchSize) {
-    int[] rr = jdbcTemplate.batchUpdate(UpdateSQL, new BatchPreparedStatementSetter() {
+    int[] rr = jdbcTemplate.batchUpdate(InsertSQL, new BatchPreparedStatementSetter() {
       @Override
       public void setValues(PreparedStatement ps, int i) throws SQLException {
         final CSVRecord r = batch.get(i);
@@ -107,6 +114,8 @@ public class CsvImporter implements ApplicationRunner {
   public void run(ApplicationArguments args) throws Exception {
     final String sourcePath = args.getOptionValues("data.csv").get(0);
     logger.info("Start processing '{}'", sourcePath);
+    final DataService ds = dataService();
+    ds.prepareTables();
     CSVParser parser = null;
     try {
       final Reader in = new FileReader(sourcePath);
@@ -117,7 +126,6 @@ public class CsvImporter implements ApplicationRunner {
       int total = 0;
       int rejected = 0;
       for (final CSVRecord record : parser) {
-        String ssoid = record.get(Fields.ssoid);
         total += 1;
         if (recordIsUseless(record)) {
           rejected += 1;
@@ -130,7 +138,7 @@ public class CsvImporter implements ApplicationRunner {
       final long saved = batchInMemBuffer();
 
       logger.info("{} records imported", saved);
-
+      ds.saveSummary(total, saved, rejected);
     } finally {
       if (parser != null) {
         parser.close();

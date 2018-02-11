@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head lang="ru">
+  <meta charset="UTF-8"/>
+  <title>Выбор отчета</title>
+</head>
+<body lang="ru">
+<h1>Тестовое задание</h1>
+<p>Исходные данные: просмотрено
+  <!--/*@thymesVar id="total" type="java.lang.Long"*/-->
+  <span th:text="${total}"></span> строк, для обработки отобрано
+  <!--/*@thymesVar id="selected" type="java.lang.Long"*/-->
+  <span th:text="${selected}"></span> строк,
+  <!--/*@thymesVar id="rejected" type="java.lang.Long"*/-->
+  <span th:text="${rejected}"></span> строк отброшено. </p>
+<ul>
+  <li><a th:href="@{/reportOne}">Список пользователей и используемых ими форм</a> </li>
+  <li><a th:href="@{/reportTwo}">Не дошедшие до конца пользователи</a> </li>
+  <li><a th:href="@{/reportThree}">Пять самых используемых форм</a> </li>
+</ul>
+</body>
+</html>

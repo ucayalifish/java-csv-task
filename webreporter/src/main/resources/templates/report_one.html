@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Список пользователей и используемых ими форм</title>
+</head>
+<body lang="ru">
+<p><a th:href="@{/}">На главную</a></p>
+<h1>Список пользователей и используемых ими форм</h1>
+
+<table>
+  <tr>
+    <th colspan="1" rowspan="1">Порядковый номер</th>
+    <th colspan="1" rowspan="1">Пользователь</th>
+    <th colspan="1" rowspan="1">Список использованных форм</th>
+  </tr>
+  <!--/*@thymesVar id="report" type="ru.ffyud.trials.csvdata.ReportOne"*/-->
+  <tr th:each="user,iterStat : ${report.users}">
+    <td colspan="1" rowspan="1" th:text="${iterStat.count}"></td>
+    <td colspan="1" rowspan="1" th:text="${user}"></td>
+    <td colspan="1" rowspan="1">
+      <span th:each="frm,istat : ${report.usedForms(user)}">
+        <span th:text="${frm}"></span><span th:text="${not istat.last}? ', '"></span>
+      </span>
+    </td>
+  </tr>
+</table>
+<p><a th:href="@{/}">На главную</a></p>
+</body>
+</html>
